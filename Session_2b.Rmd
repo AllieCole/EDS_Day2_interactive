@@ -1,0 +1,130 @@
+---
+title: "Session 2b"
+author: "Allie Cole"
+date: "8/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+library(palmerpenguins)
+```
+
+### Plot a function in `ggplot2`
+
+```{r}
+eq <- function(x){
+  
+  3 * x^2 + 4 
+  
+}
+
+#Use stat_function() so we dont have to define and bind and make a new data frame. this function needs teh begining and end of the data but it still NEEDS to be in a data frame because ggplot is picky
+
+ggplot(data = data.frame(x = c(1, 100)), aes(x = x)) +
+  stat_function(fun = eq)
+
+
+```
+
+### Task from allison
+
+Plot function $F(x)=2.4-5x^3+2.1x^2$ over a range from -50 to 50 using stat_function()
+
+ # by putting f(x) into $ it makes it a 
+```{r}
+eq2 <- function(x) {
+  
+  2.4 - 5 * x^3 + 2.1 * x^2
+} 
+
+ggplot(data = data.frame(x = c(-50, 50)), aes(x = x)) +
+  stat_function(fun = eq2) #this is one way where you are making the mini data frame 
+
+#to bypass the data frame you can use data = NULL like i did below 
+
+ggplot(data = NULL) +
+  stat_function(fun = eq2) +
+  xlim(min = -50, max = 50)
+
+```
+
+### `penguins` body mass and flipper lengths 
+
+```{r}
+
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point()
+
+# command + shift + c will comment out multiple lines (will also uncomment them if you want)
+
+#Now we are going to map the colors. when it is based on a variable we put it inside aes, when its not based on a variable it doesnt have to be within aes 
+
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(aes(color = species)) +  #So here you can see it in the geom_point becasue it is teh scatter plot we are changing the color of 
+  scale_color_manual(values = c("blue", "pink", "purple")) + #paletteer package for colors and palettes
+  labs(x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       title = "Palmer Penguins size measurments",
+       caption = "Data collected by KB Gorman et al.",
+       color = "species")
+
+```
+
+
+### Now we want three seperate plots based on islands 
+
+```{r}
+ggplot(data = penguins, aes(x = flipper_length_mm, y = body_mass_g)) + 
+  geom_point(aes(color = species)) +   
+  scale_color_manual(values = c("blue", "pink", "purple")) + 
+  labs(x = "Flipper length (mm)",
+       y = "Body mass (g)",
+       title = "Palmer Penguins size measurments",
+       caption = "Data collected by KB Gorman et al.",
+       color = "species") +
+  facet_wrap(~island) + #this will split them up for us (SO GREAT I LOVE IT)
+  theme_minimal() 
+
+```
+
+
+### Higher order derivative s
+
+```{r}
+gt <- expression(2.2 + 3.1 * t - 5.6 * t^4)
+
+dg_dt <- D(expr = gt, "t")
+d2g_dt2 <- D(expr = dg_dt, "t")
+
+```
+
+### Partical derivates 
+
+For the function $f(x, y, z)= 2xy - 3x^2z^3$ 
+
+```{r}
+f_xyz <- expression(2*x*y - 3*(x^2)*(z^3))
+
+df_dx <- D(expr = f_xyz, "x")
+df_dy <- D(expr = f_xyz, "y")
+df_dz <- D(expr = f_xyz, "z")
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
