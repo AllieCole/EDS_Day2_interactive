@@ -9,3 +9,53 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+## Derivatives in R
+
+```{r}
+#need "expression" so that r knows its a symbolic representation of a function and not a stored value for x 
+
+fx <- expression(x^2)
+df_dx <- D(expr = fx, name =  "x")
+
+#Evaluate teh slope of fx at x = 831
+
+x <- 831
+eval(expr = df_dx) #here we can ask r to evaluate any expression we want 
+
+```
+### Allison's example
+```{r}
+gt <- expression(3 * t^2 - 4 * cos(t))
+
+dg_dt <- D(expr =gt, name = "t")
+
+```
+
+### Trying one on my own
+
+```{r}
+ht <- expression(8 * t^8 - exp(t^2) + 8) #this is my expression f(x) 
+
+dh_dt <- D(expr = ht, name = "t") #here we ask for the derivative 
+dh_dt # just calling it so I can look at it 
+
+t <- 60 #now I want to know what the slope is at 60
+eval(expr = dh_dt) #lol the answer is - infinity 
+```
+
+### Finding the slope at a range of values 
+
+```{r}
+#-10 to 10 by 0.5  #what we want
+
+x <- seq(from = -10, to = 10, by = 0.5) #making a sequence to get multilpe places to ask for the slope
+eval(expr = df_dx) # just using the one from above!
+```
+
+
+
+
+
+
+
+
